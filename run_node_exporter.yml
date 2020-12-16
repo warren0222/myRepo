@@ -1,0 +1,27 @@
+---
+- name: install and run prometheus node_exporter
+  hosts: 192.168.20.181
+  tasks: 
+    - name: check node_exporter
+      shell: ls /usr/local/node_exporter-1.0.1.linux-amd64
+      ignore_errors: True
+      register: result
+
+    - name: copy and run node_exporter 
+      unarchive:
+        src: /home/warren/ansible-playbook/prometheus/node_exporter-1.0.1.linux-amd64.tar.gz
+        dest: /usr/local/
+        copy: yes 
+      when: result is failed
+      notify:
+        - start node_exporter
+
+    - name: run handler
+      shell: echo "node_exporter is installed"
+      when: result is succeeded
+      notify: 
+        - start node_exporter
+
+  handlers:
+    - name: start node_exporter
+      shell: nohup /usr/local/node_exporter-1.0.1.linux-amd64/node_exporter &

@@ -1,0 +1,34 @@
+---
+- name: install and run prometheus node_exporter
+  hosts: localhost
+  tasks: 
+    - name: check node_exporter
+      shell: ls /usr/local/node_exporter-1.0.1.linux-amd64
+      ignore_errors: True
+      register: result
+
+    - name: copy and run node_exporter 
+      debug:
+        msg: "aaa"
+      when: result is failed
+      changed_when: yes
+      notify:
+        - start node_exporter
+
+    - name: installed
+      debug: 
+        msg: "bbb"
+      when: result is succeeded
+      changed_when: yes
+      notify: 
+        - node_exporter is installed
+
+  handlers:
+    - name: start node_exporter
+      shell: ls /usr/local/
+      register: out1
+      #debug: var=out1 verbosity=0
+    - name: node_exporter is installed
+      shell: ls /usr/local/node_exporter-1.0.1.linux-amd64
+      register: out2
+      #debug: var=out2 verbosity=0
