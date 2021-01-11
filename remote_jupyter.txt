@@ -1,0 +1,13 @@
+pip install jupyter notebook
+jupyter notebook --generate-config
+ipython
+from notebook.auth import passwd
+passwd()
+vim ~/.jupyter/jupyter_notebook_config.py
+c.NotebookApp.password = u'sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed'
+c.NotebookApp.allow_remote_access = True
+c.NotebookApp.ip='*'
+c.NotebookApp.open_browser = False
+c.NotebookApp.port = 9999
+firewall-cmd --zone=public --add-port=9999/tcp --permanent
+nohup jupyter notebook &
