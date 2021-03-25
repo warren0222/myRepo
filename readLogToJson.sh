@@ -1,5 +1,5 @@
 #!/bin/bash
-cat Helpdesk_interview_data_set  | grep -e 'error:' -e 'error =' | cut -d ' ' -f 3-5,7- | awk -F " " '{for(i=1;i<=1;i++){if(i==1){$i=substr($i,0,2)}else{$i=$i}}; printf "%02d00-%02d00 %s\n",$1, $1+1, $0}' | cut -d ' ' -f 1,3- | sort | uniq -c > log
+cat helpdesk_log | grep -e 'error:' -e 'error =' | cut -d ' ' -f 3-5,7- | awk -F " " '{for(i=1;i<=1;i++){if(i==1){$i=substr($i,0,2)}else{$i=$i}}; printf "%02d00-%02d00 %s\n",$1, $1+1, $0}' | cut -d ' ' -f 1,3- | sort | uniq -c > log
 i=0
 touch log.json
 echo "[" > log.json
